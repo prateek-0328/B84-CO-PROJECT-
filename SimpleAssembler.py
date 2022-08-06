@@ -22,7 +22,10 @@ def opcode(ins, regval=0):
             "jlt":"01100",
             "jgt":"01101",
             "je":"01111",
-            "hlt":"01010"}
+            "hlt":"01010",
+            "addf":"00000",
+            "subf":"00001",
+            "movf":"00010"}
     if regval==1:
         return opcode["mov"][0]
     elif regval==2:
@@ -47,8 +50,8 @@ def regaddress(reg):
         return 0
 def instype(ins,regval=0): 
     #returns the type of instruction as a string
-    typetable={"a":["add","sub","mul","xor","or","and"],
-                "b":["mov","ls","rs"],
+    typetable={"a":["add","sub","mul","xor","or","and","addf","subf"],
+                "b":["mov","ls","rs","movf"],
                 "c":["mov","div","not","cmp"],
                 "d":["ld","st"],
                 "e":["jmp","jlt","jgt","je"],
