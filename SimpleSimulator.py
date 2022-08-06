@@ -246,7 +246,7 @@ def execute(ins,cycle):
         # 5  3    8
         R1=ins[5:8:]
         val=integer(ins[8::])
-        shifteds=getregister(reg,,flag,R1,True)[val::]+'0'*val
+        shifteds=getregister(reg,flag,R1,True)[val::]+'0'*val
         setregister(reg,R1,int(shifteds,2))
         setflag(flag,0)
         halt=False
