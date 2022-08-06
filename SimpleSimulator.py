@@ -129,9 +129,9 @@ def execute(ins):
     if opcode=="10000":
         # add unused reg1 reg2 reg3
         # 5   2      3    3    3
-        R1=ins[7:10:]
-        R2=ins[10:13:]
-        R3=ins[13:16:]
+        R2=ins[7:10:]
+        R3=ins[10:13:]
+        R1=ins[13:16:]
         pR1=getregister(reg,flag,R2,False)+getregister(reg,flag,R3,False)
         if overflow(pR1):
             setflag(flag,1)
@@ -144,9 +144,9 @@ def execute(ins):
     elif opcode=="10001":
         # sub unused reg1 reg2 reg3
         # 5   2      3    3    3
-        R1=ins[7:10:]
-        R2=ins[10:13:]
-        R3=ins[13:16:]
+        R2=ins[7:10:]
+        R3=ins[10:13:]
+        R1=ins[13:16:]
         pR1=getregister(reg,flag,R2,False)-getregister(reg,flag,R3,False)
         if pR1 <0:
             setflag(flag,1)
@@ -170,8 +170,8 @@ def execute(ins):
     elif opcode=="10011":
         # mov unused reg1 reg2
         # 5   5      3    3
-        R1=ins[10:13:]
-        R2=ins[13::]
+        R2=ins[10:13:]
+        R1=ins[13::]
         setregister(reg,R1,getregister(reg,flag,R2,False))
         setflag(flag,0)
         halt=False
@@ -205,9 +205,9 @@ def execute(ins):
     elif opcode=="10110":
         # mul unused reg1 reg2 reg3
         # 5   2      3    3    3
-        R1=ins[7:10:]
-        R2=ins[10:13:]
-        R3=ins[13:16:]
+        R2=ins[7:10:]
+        R3=ins[10:13:]
+        R1=ins[13:16:]
         pR1=getregister(reg,flag,R2,False)*getregister(reg,flag,R3,False)
         if overflow(pR1):
             setflag(flag,1)
@@ -225,7 +225,7 @@ def execute(ins):
         rem=getregister(reg,R1,False)%getregister(reg,R2,False)
         quotient=getregister(reg,R1,False)//getregister(reg,R2,False)
         setregister(reg,"000",quotient)
-        setregister(reg,"111",rem)
+        setregister(reg,"001",rem)
         setflag(flag,0)
         halt=False
         newpc=counter+1
@@ -255,9 +255,9 @@ def execute(ins):
     elif opcode=="11010":
         # xor unused reg1 reg2 reg3
         # 5   2      3    3    3
-        R1=ins[7:10:]
-        R2=ins[10:13:]
-        R3=ins[13::]
+        R2=ins[7:10:]
+        R3=ins[10:13:]
+        R1=ins[13::]
         pR1=getregister(reg,flag,R2,False)^getregister(reg,flag,R3,False)
         setregister(reg,R1,pR1)
         setflag(flag,0)
@@ -267,9 +267,9 @@ def execute(ins):
     elif opcode=="11011":
         # or unused reg1 reg2 reg3
         # 5  2      3    3    3
-        R1=ins[7:10:]
-        R2=ins[10:13:]
-        R3=ins[13::]
+        R2=ins[7:10:]
+        R3=ins[10:13:]
+        R1=ins[13::]
         pR1=getregister(reg,flag,R2,False)|getregister(reg,flag,R3,False)
         setregister(reg,R1,pR1)
         setflag(flag,0)
@@ -279,9 +279,9 @@ def execute(ins):
     elif opcode=="11100":
         # and unused reg1 reg2 reg3
         # 5   2      3    3    3
-        R1=ins[7:10:]
-        R2=ins[10:13:]
-        R3=ins[13::]
+        R2=ins[7:10:]
+        R3=ins[10:13:]
+        R1=ins[13::]
         pR1=getregister(reg,flag,R2,False)&getregister(reg,flag,R3,False)
         setregister(reg,R1,pR1)
         setflag(flag,0)
@@ -291,8 +291,8 @@ def execute(ins):
     elif opcode=="11101":
         # not unused reg1 reg2
         # 5   5      3    3
-        R1=ins[10:13:]
-        R2=ins[13::]
+        R2=ins[10:13:]
+        R1=ins[13::]
         inverted=""
         for i in R2:
             if i=="1":
@@ -370,6 +370,9 @@ def execute(ins):
         setflag(flag,0)
         halt=True
         newpc=counter+1
+
+
+
 
     cycle+=1
     return(halt,newpc)
