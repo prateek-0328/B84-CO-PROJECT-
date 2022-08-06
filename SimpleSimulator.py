@@ -118,7 +118,7 @@ def plotMemoryAccessTrace():
 # --------------------------------------------------------------------
 #  Execution Engine
 
-def execute(ins):
+def execute(ins,cycle):
     # takes a 16 bit binary string of assembly instructionand returns the updated state of halted ins and updated value of pc
 
     opcode=ins[:5:]
@@ -197,7 +197,7 @@ def execute(ins):
         memadd=ins[8::]
         xcoord.append(cycle)
         ycoord.append(integer(memadd))
-        setval(memadd,getregister(reg,R1,False))
+        setval(memadd,getregister(reg,flag,R1,False))
         setflag(flag,0)
         halt=False
         newpc=counter+1
@@ -222,8 +222,8 @@ def execute(ins):
         # 5   5      3    3   
         R1=ins[10:13:]
         R2=ins[13::]
-        rem=getregister(reg,R1,False)%getregister(reg,R2,False)
-        quotient=getregister(reg,R1,False)//getregister(reg,R2,False)
+        rem=getregister(reg,R1,flag,False)%getregister(reg,R2,flag,False)
+        quotient=getregister(reg,flag,R1,False)//getregister(reg,flag,R2,False)
         setregister(reg,"000",quotient)
         setregister(reg,"001",rem)
         setflag(flag,0)
@@ -235,7 +235,7 @@ def execute(ins):
         # 5  3    8
         R1=ins[5:8:]
         val=integer(ins[8::])
-        shifteds='0'*val+getregister(reg,R1,True)[:len(getregister(reg,R1,True))-val:]
+        shifteds='0'*val+getregister(reg,flag,R1,True)[:len(getregister(reg,flag,R1,True))-val:]
         setregister(reg,R1,int(shifteds,2))
         setflag(flag,0)
         halt=False
@@ -246,7 +246,7 @@ def execute(ins):
         # 5  3    8
         R1=ins[5:8:]
         val=integer(ins[8::])
-        shifteds=getregister(reg,R1,True)[val::]+'0'*val
+        shifteds=getregister(reg,,flag,R1,True)[val::]+'0'*val
         setregister(reg,R1,int(shifteds,2))
         setflag(flag,0)
         halt=False
@@ -309,9 +309,9 @@ def execute(ins):
         # 5   5      3    3
         R1=ins[10:13:]
         R2=ins[13::]
-        if getregister(reg,R1,False)<getregister(reg,R2,False):
+        if getregister(reg,flag,R1,False)<getregister(reg,flag,R2,False):
             setflag(flag,2)
-        elif getregister(reg,R1,False)>getregister(reg,R2,False):
+        elif getregister(reg,flag,R1,False)>getregister(reg,flag,R2,False):
             setflag(flag,3)
         else:
             setflag(flag,4)
@@ -384,7 +384,7 @@ halted=False
 
 while(not halted):
     ins=data(counter)
-    halted,newpc=execute(ins)
+    halted,newpc=execute(ins,cycle)
     pcdump(counter)
     rfdump(reg,flag)
     counter=newpc
